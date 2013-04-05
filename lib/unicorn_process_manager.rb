@@ -1,10 +1,11 @@
 # encoding: UTF-8
 
 class UnicornProcessManager
-  def initialize(rails_env, rails_home, timeout)
+  def initialize(rails_env, rails_home, timeout=60, port=3000)
     @rails_env  = rails_env
     @rails_home = rails_home
     @timeout    = timeout
+    @port       = port
 
     @config_file = (@rails_env == 'production') ? "#{@rails_home}/current/config/unicorn.rb" : "#{@rails_home}/config/unicorn.rb"
     @pid_file    = (@rails_env == 'production') ? "#{@rails_home}/shared/pids/unicorn.pid" : "#{@rails_home}/tmp/pids/unicorn.pid"
@@ -19,6 +20,7 @@ class UnicornProcessManager
     puts "timeout    : #{@timeout}"
     puts "RAILS_ENV  : #{@rails_env}"
     puts "rails home : #{@rails_home}"
+    puts "port       : #{@port}"
     puts "----- usage -----"
     puts "#{$0} {start|stop|restart|status|reopen_log} [-e RAILS_ENV] [-h RAILS_HOME] [-t timeout_sec]"
     true
@@ -27,7 +29,7 @@ class UnicornProcessManager
   def start
     exit 0 if is_unicorn_running?
 
-    cmd = "bundle exec unicorn -p 3000 -c #{@config_file} -D"
+    cmd = "bundle exec unicorn -p #{@port} -c #{@config_file} -D"
     start_time = Time.now
     pid = spawn({'RAILS_ENV' => @rails_env, 'BUNDLE_GEMFILE' => @gemfile}, cmd)
     # 起動するまで待つ

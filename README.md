@@ -46,7 +46,7 @@ unicorn.send action'
 ### command
 
 ~~~~~
-script/unicorn_manager {start|stop|restart|status|reopen_log} [-e RAILS_ENV] [-h RAILS_HOME] [-t timeout_sec]
+script/unicorn_manager {start|stop|restart|status|reopen_log} [-e RAILS_ENV] [-h RAILS_HOME] [-t timeout_sec] [-p port]
 ~~~~~
 
 
