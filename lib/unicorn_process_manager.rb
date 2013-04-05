@@ -1,11 +1,11 @@
 # encoding: UTF-8
 
 class UnicornProcessManager
-  def initialize(rails_env, rails_home, timeout=60, port=3000)
+  def initialize(rails_env, rails_home, timeout, port)
     @rails_env  = rails_env
     @rails_home = rails_home
-    @timeout    = timeout
-    @port       = port
+    @timeout    = timeout  || 60
+    @port       = port || 3000
 
     @config_file = (@rails_env == 'production') ? "#{@rails_home}/current/config/unicorn.rb" : "#{@rails_home}/config/unicorn.rb"
     @pid_file    = (@rails_env == 'production') ? "#{@rails_home}/shared/pids/unicorn.pid" : "#{@rails_home}/tmp/pids/unicorn.pid"
@@ -22,7 +22,7 @@ class UnicornProcessManager
     puts "rails home : #{@rails_home}"
     puts "port       : #{@port}"
     puts "----- usage -----"
-    puts "#{$0} {start|stop|restart|status|reopen_log} [-e RAILS_ENV] [-h RAILS_HOME] [-t timeout_sec]"
+    puts "#{$0} {start|stop|restart|status|reopen_log} [-e RAILS_ENV] [-h RAILS_HOME] [-t timeout_sec] [-p port]"
     true
   end
 
