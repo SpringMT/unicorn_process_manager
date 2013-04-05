@@ -1,16 +1,16 @@
 # UnicornProcessManager
 
-
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'unicorn_process_manager'
+    gem 'unicorn_process_manager', github: 'SpringMT/unicorn_process_manager'
 
 And then execute:
 
     $ bundle
 
+**The gem doesn't upload rubygems.org!**
 
 ## Usage
 
