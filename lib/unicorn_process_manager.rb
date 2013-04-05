@@ -5,7 +5,7 @@ class UnicornProcessManager
     @rails_env  = rails_env
     @rails_home = rails_home
     @timeout    = timeout  || 60
-    @port       = port || 3000
+    @port       = port     || 3000
 
     @config_file = (@rails_env == 'production') ? "#{@rails_home}/current/config/unicorn.rb" : "#{@rails_home}/config/unicorn.rb"
     @pid_file    = (@rails_env == 'production') ? "#{@rails_home}/shared/pids/unicorn.pid" : "#{@rails_home}/tmp/pids/unicorn.pid"
