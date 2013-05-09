@@ -7,12 +7,12 @@ class UnicornProcessManager
     @timeout    = timeout  || 60
     @port       = port     || 3000
 
-    @config_file = (@rails_env == 'production') ? "#{@rails_home}/current/config/unicorn.rb" : "#{@rails_home}/config/unicorn.rb"
-    @pid_file    = (@rails_env == 'production') ? "#{@rails_home}/shared/pids/unicorn.pid" : "#{@rails_home}/tmp/pids/unicorn.pid"
+    @config_file = (@rails_env == 'production' || @rails_env == 'staging') ? "#{@rails_home}/current/config/unicorn.rb" : "#{@rails_home}/config/unicorn.rb"
+    @pid_file    = (@rails_env == 'production' || @rails_env == 'staging') ? "#{@rails_home}/shared/pids/unicorn.pid" : "#{@rails_home}/tmp/pids/unicorn.pid"
     # BUNDLE_GEMFILEの設定
     # Capistrano によるデプロイ時に Unicorn の再起動に失敗することがある問題への対処 http://blog.twiwt.org/e/2e6270
     # CapistranoでUnicornの起動と停止と再起動 http://higelog.brassworks.jp/?p=1533
-    @gemfile     = (@rails_env == 'production') ? "#{@rails_home}/current/Gemfile" : "#{@rails_home}/Gemfile"
+    @gemfile     = (@rails_env == 'production' || @rails_env == 'staging') ? "#{@rails_home}/current/Gemfile" : "#{@rails_home}/Gemfile"
   end
 
   def usage
