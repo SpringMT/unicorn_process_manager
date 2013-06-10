@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "unicorn_process_manager"
-  spec.version       = "0.0.4"
+  spec.version       = "0.0.5"
   spec.authors       = ["Spring_MT"]
   spec.email         = ["today.is.sky.blue.sky@gmail.com"]
   spec.summary       = %q{manage unicorn [start|stop|restart|reopen_log] for rails + capistrano}
