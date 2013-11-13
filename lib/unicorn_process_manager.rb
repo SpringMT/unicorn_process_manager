@@ -1,26 +1,29 @@
 # encoding: UTF-8
 
 class UnicornProcessManager
-  def initialize(rails_env, rails_home, timeout, port)
-    @rails_env  = rails_env
-    @rails_home = rails_home
-    @timeout    = timeout  || 60
-    @port       = port     || 3000
+  def initialize(configs={})
+    @app_home = configs[:app_home] or raise ':app_home is required'
 
-    @config_file = (@rails_env == 'production' || @rails_env == 'staging') ? "#{@rails_home}/current/config/unicorn.rb" : "#{@rails_home}/config/unicorn.rb"
-    @pid_file    = (@rails_env == 'production' || @rails_env == 'staging') ? "#{@rails_home}/shared/pids/unicorn.pid" : "#{@rails_home}/tmp/pids/unicorn.pid"
+    @env_name = configs[:env_name] || 'RAILS_ENV'
+    @app_env  = configs[:app_env]  || 'development'
+    @timeout  = configs[:timeout]  || 60
+    @port     = configs[:port]     || 3000
+
+    @config_file = (@app_env == 'production' || @app_env == 'staging') ? "#{@app_home}/current/config/unicorn.rb" : "#{@app_home}/config/unicorn.rb"
+    @pid_file    = (@app_env == 'production' || @app_env == 'staging') ? "#{@app_home}/shared/pids/unicorn.pid" : "#{@app_home}/tmp/pids/unicorn.pid"
     # BUNDLE_GEMFILEの設定
     # Capistrano によるデプロイ時に Unicorn の再起動に失敗することがある問題への対処 http://blog.twiwt.org/e/2e6270
     # CapistranoでUnicornの起動と停止と再起動 http://higelog.brassworks.jp/?p=1533
-    @gemfile     = (@rails_env == 'production' || @rails_env == 'staging') ? "#{@rails_home}/current/Gemfile" : "#{@rails_home}/Gemfile"
+    @gemfile     = (@app_env == 'production' || @app_env == 'staging') ? "#{@app_home}/current/Gemfile" : "#{@app_home}/Gemfile"
   end
 
   def usage
     puts "----- default -----"
-    puts "timeout    : #{@timeout}"
-    puts "RAILS_ENV  : #{@rails_env}"
-    puts "rails home : #{@rails_home}"
-    puts "port       : #{@port}"
+    puts "timeout  : #{@timeout}"
+    puts "env name : #{@app_env_name}"
+    puts "app env  : #{@app_env}"
+    puts "app home : #{@app_home}"
+    puts "port     : #{@port}"
     puts "----- usage -----"
     puts "#{$0} {start|stop|restart|status|reopen_log} [-e RAILS_ENV] [-h RAILS_HOME] [-t timeout_sec] [-p port]"
     true
@@ -31,7 +34,7 @@ class UnicornProcessManager
 
     cmd = "bundle exec unicorn -p #{@port} -c #{@config_file} -D"
     start_time = Time.now
-    pid = spawn({'RAILS_ENV' => @rails_env, 'BUNDLE_GEMFILE' => @gemfile}, cmd)
+    pid = spawn({@env_name => @app_env, 'BUNDLE_GEMFILE' => @gemfile}, cmd)
     # 起動するまで待つ
     Process.waitpid pid
 

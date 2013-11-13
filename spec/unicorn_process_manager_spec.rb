@@ -5,14 +5,13 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe UnicornProcessManager do
   context :new do
-    subject {UnicornProcessManager.new("test", "/home/hoge", 60, 3000)}
+    subject {UnicornProcessManager.new(app_env: "test", app_home: "/home/hoge", timeout: 60, port: 3000)}
     it {should be_true}
   end
   context :usage do
-    subject {UnicornProcessManager.new("test", "/home/hoge", nil, nil).usage}
+    subject {UnicornProcessManager.new(app_env: "test", app_home: "/home/hoge", timeout: nil, timeout: nil).usage}
     it {should be_true}
   end
 end
-
 
 
